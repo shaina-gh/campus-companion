@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -13,7 +14,7 @@ interface Skill {
 }
 
 const SkillTracker = () => {
-  const skills: Skill[] = [
+  const [skills, setSkills] = useState<Skill[]>([
     {
       id: 1,
       name: "Data Structures & Algorithms",
@@ -46,7 +47,22 @@ const SkillTracker = () => {
       target: 12,
       unit: "sessions"
     }
-  ];
+  ]);
+
+  const handleAddGoal = () => {
+    console.log("Add new goal clicked");
+    alert("Add Goal feature - would open a form to create new skill development goal");
+  };
+
+  const handleUpdateProgress = (skillId: number) => {
+    console.log("Update progress for skill:", skillId);
+    // In a real app, this would increment the progress
+    setSkills(skills.map(skill => 
+      skill.id === skillId 
+        ? { ...skill, progress: Math.min(skill.progress + 1, skill.target) }
+        : skill
+    ));
+  };
 
   const getProgressPercentage = (skill: Skill) => {
     return Math.round((skill.progress / skill.target) * 100);
@@ -69,7 +85,7 @@ const SkillTracker = () => {
             <Target className="h-5 w-5 text-primary" />
             Skill Development Goals
           </CardTitle>
-          <Button variant="success" size="sm">
+          <Button variant="success" size="sm" onClick={handleAddGoal}>
             <Plus className="h-4 w-4" />
             Add Goal
           </Button>
@@ -95,10 +111,20 @@ const SkillTracker = () => {
                   </div>
                 </div>
               </div>
-              <Progress 
-                value={getProgressPercentage(skill)} 
-                className="h-2"
-              />
+              <div className="flex items-center gap-2">
+                <Progress 
+                  value={getProgressPercentage(skill)} 
+                  className="h-2 flex-1"
+                />
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => handleUpdateProgress(skill.id)}
+                  className="h-6 px-2 text-xs"
+                >
+                  +1
+                </Button>
+              </div>
             </div>
           ))}
         </div>

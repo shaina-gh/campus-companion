@@ -14,7 +14,7 @@ interface JournalEntry {
 }
 
 const CareerJournal = () => {
-  const [entries] = useState<JournalEntry[]>([
+  const [entries, setEntries] = useState<JournalEntry[]>([
     {
       id: 1,
       title: "Google Technical Interview Experience",
@@ -51,6 +51,16 @@ const CareerJournal = () => {
     }
   };
 
+  const handleAddEntry = () => {
+    console.log("Add new journal entry clicked");
+    alert("New Entry feature - would open a form to create new journal entry");
+  };
+
+  const handleViewEntry = (entryId: number) => {
+    console.log("View entry:", entryId);
+    alert(`View full details for journal entry ID: ${entryId}`);
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
@@ -67,7 +77,7 @@ const CareerJournal = () => {
             <BookOpen className="h-5 w-5 text-primary" />
             Career Journal
           </CardTitle>
-          <Button variant="hero" size="sm">
+          <Button variant="hero" size="sm" onClick={handleAddEntry}>
             <Plus className="h-4 w-4" />
             New Entry
           </Button>
@@ -109,7 +119,12 @@ const CareerJournal = () => {
                 {entry.content}
               </p>
               <div className="flex items-center gap-2 mt-3">
-                <Button variant="ghost" size="sm" className="h-8 px-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-8 px-2"
+                  onClick={() => handleViewEntry(entry.id)}
+                >
                   <MessageCircle className="h-3 w-3" />
                   View Details
                 </Button>

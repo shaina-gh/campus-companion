@@ -15,6 +15,21 @@ import {
 } from "lucide-react";
 
 const Dashboard = () => {
+  const handleQuickAction = (action: string) => {
+    console.log("Quick action:", action);
+    alert(`${action} feature - would open relevant form/modal`);
+  };
+
+  const handleNotification = () => {
+    console.log("Notification clicked");
+    alert("Notifications - check your latest updates and reminders");
+  };
+
+  const handleConnectPeers = () => {
+    console.log("Connect with peers clicked");
+    alert("Connect with Peers - find other students preparing for placements");
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -30,10 +45,10 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" onClick={handleNotification}>
                 <Bell className="h-4 w-4" />
               </Button>
-              <Button variant="hero" size="sm">
+              <Button variant="hero" size="sm" onClick={handleConnectPeers}>
                 <Users className="h-4 w-4" />
                 Connect with Peers
               </Button>
@@ -107,15 +122,27 @@ const Dashboard = () => {
             Quick Actions
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button variant="outline" className="h-auto p-4 flex-col gap-2">
+            <Button 
+              variant="outline" 
+              className="h-auto p-4 flex-col gap-2"
+              onClick={() => handleQuickAction("Add New Application")}
+            >
               <Building2 className="h-5 w-5" />
               <span>Add New Application</span>
             </Button>
-            <Button variant="outline" className="h-auto p-4 flex-col gap-2">
+            <Button 
+              variant="outline" 
+              className="h-auto p-4 flex-col gap-2"
+              onClick={() => handleQuickAction("Set New Goal")}
+            >
               <Target className="h-5 w-5" />
               <span>Set New Goal</span>
             </Button>
-            <Button variant="outline" className="h-auto p-4 flex-col gap-2">
+            <Button 
+              variant="outline" 
+              className="h-auto p-4 flex-col gap-2"
+              onClick={() => handleQuickAction("Log Achievement")}
+            >
               <Award className="h-5 w-5" />
               <span>Log Achievement</span>
             </Button>

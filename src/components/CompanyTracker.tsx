@@ -51,6 +51,17 @@ const CompanyTracker = () => {
     }
   };
 
+  const handleAddCompany = () => {
+    console.log("Add new company clicked");
+    // In a real app, this would open a modal or form
+    alert("Add Company feature - would open a form to add new company application");
+  };
+
+  const handleViewCompany = (companyId: number) => {
+    console.log("View company:", companyId);
+    alert(`View details for company ID: ${companyId}`);
+  };
+
   return (
     <Card className="bg-gradient-card shadow-custom-md">
       <CardHeader>
@@ -59,7 +70,7 @@ const CompanyTracker = () => {
             <Building2 className="h-5 w-5 text-primary" />
             Company Applications
           </CardTitle>
-          <Button variant="hero" size="sm">
+          <Button variant="hero" size="sm" onClick={handleAddCompany}>
             <Plus className="h-4 w-4" />
             Add Company
           </Button>
@@ -90,7 +101,7 @@ const CompanyTracker = () => {
                   <p className="text-xs text-muted-foreground mt-2">{company.notes}</p>
                 )}
               </div>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" onClick={() => handleViewCompany(company.id)}>
                 <ExternalLink className="h-4 w-4" />
               </Button>
             </div>
