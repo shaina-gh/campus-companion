@@ -3,6 +3,7 @@ import CompanyTracker from "@/components/CompanyTracker";
 import SkillTracker from "@/components/SkillTracker";
 import CareerJournal from "@/components/CareerJournal";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { 
   Building2, 
   Target, 
@@ -15,9 +16,16 @@ import {
 } from "lucide-react";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const handleQuickAction = (action: string) => {
     console.log("Quick action:", action);
-    alert(`${action} feature - would open relevant form/modal`);
+    if (action === "Add New Application") {
+      navigate("/add-company");
+    } else if (action === "Set New Goal") {
+      navigate("/add-goal");
+    } else if (action === "Log Achievement") {
+      navigate("/log-achievement");
+    }
   };
 
   const handleNotification = () => {
