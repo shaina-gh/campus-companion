@@ -2,6 +2,8 @@ import DashboardCard from "@/components/DashboardCard";
 import CompanyTracker from "@/components/CompanyTracker";
 import SkillTracker from "@/components/SkillTracker";
 import CareerJournal from "@/components/CareerJournal";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { 
@@ -39,35 +41,21 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-                Campus Companion
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Your personalized career growth dashboard
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm" onClick={handleNotification}>
-                <Bell className="h-4 w-4" />
-              </Button>
-              <Button variant="hero" size="sm" onClick={handleConnectPeers}>
-                <Users className="h-4 w-4" />
-                Connect with Peers
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-background">
+      <Navbar />
 
       <main className="container mx-auto px-6 py-8">
-        {/* Welcome Section */}
-        <div className="mb-8">
+        {/* Welcome Section with Enhanced Header */}
+        <div className="mb-8 text-center">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Button variant="ghost" size="sm" onClick={handleNotification} className="hover:scale-110 transition-transform">
+              <Bell className="h-5 w-5" />
+            </Button>
+            <Button variant="hero" size="sm" onClick={handleConnectPeers} className="gap-2">
+              <Users className="h-4 w-4" />
+              Connect with Peers
+            </Button>
+          </div>
           <h2 className="text-3xl font-bold text-foreground mb-2">
             Good morning, Student! 👋
           </h2>
@@ -132,46 +120,33 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Button 
               variant="outline" 
-              className="h-auto p-4 flex-col gap-2"
+              className="h-auto p-4 flex-col gap-2 hover:scale-105 transition-transform group"
               onClick={() => handleQuickAction("Add New Application")}
             >
-              <Building2 className="h-5 w-5" />
+              <Building2 className="h-6 w-6 group-hover:scale-110 transition-transform" />
               <span>Add New Application</span>
             </Button>
             <Button 
               variant="outline" 
-              className="h-auto p-4 flex-col gap-2"
+              className="h-auto p-4 flex-col gap-2 hover:scale-105 transition-transform group"
               onClick={() => handleQuickAction("Set New Goal")}
             >
-              <Target className="h-5 w-5" />
+              <Target className="h-6 w-6 group-hover:scale-110 transition-transform" />
               <span>Set New Goal</span>
             </Button>
             <Button 
               variant="outline" 
-              className="h-auto p-4 flex-col gap-2"
+              className="h-auto p-4 flex-col gap-2 hover:scale-105 transition-transform group"
               onClick={() => handleQuickAction("Log Achievement")}
             >
-              <Award className="h-5 w-5" />
+              <Award className="h-6 w-6 group-hover:scale-110 transition-transform" />
               <span>Log Achievement</span>
             </Button>
           </div>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t bg-card/50 mt-12">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">
-              Campus Companion - Empowering your career journey
-            </p>
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm">Help</Button>
-              <Button variant="ghost" size="sm">Settings</Button>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

@@ -81,7 +81,9 @@ export default {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-success': 'var(--gradient-success)',
 				'gradient-hero': 'var(--gradient-hero)',
-				'gradient-card': 'var(--gradient-card)'
+				'gradient-card': 'var(--gradient-card)',
+				'gradient-lovable': 'var(--gradient-lovable)',
+				'gradient-background': 'var(--gradient-background)'
 			},
 			boxShadow: {
 				'custom-sm': 'var(--shadow-sm)',
