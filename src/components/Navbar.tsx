@@ -8,12 +8,15 @@ import {
   TrendingUp,
   UserPlus,
   LogIn,
+  LogOut,
   Award,
   Plus
 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const location = useLocation();
+  const { user, signOut } = useAuth();
   
   const isActive = (path: string) => location.pathname === path;
 
@@ -40,54 +43,72 @@ const Navbar = () => {
             </h1>
           </Link>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-1">
+          {/* Navigation Links - Only show if authenticated */}
+          {user && (
+            <div className="hidden md:flex items-center space-x-1">
+              {navItems.map((item) => (
+                <Link key={item.path} to={item.path}>
+                  <Button
+                    variant={isActive(item.path) ? "default" : "ghost"}
+                    size="sm"
+                    className="gap-2 hover:scale-105 transition-transform"
+                  >
+                    <item.icon className="h-4 w-4" />
+                    {item.label}
+                  </Button>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Auth Buttons */}
+          <div className="flex items-center space-x-2">
+            {user ? (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="gap-2 hover:scale-105 transition-transform"
+                onClick={signOut}
+              >
+                <LogOut className="h-4 w-4" />
+                Sign Out
+              </Button>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="ghost" size="sm" className="gap-2 hover:scale-105 transition-transform">
+                    <LogIn className="h-4 w-4" />
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button variant="hero" size="sm" className="gap-2">
+                    <UserPlus className="h-4 w-4" />
+                    Sign Up
+                  </Button>
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile Navigation - Only show if authenticated */}
+        {user && (
+          <div className="md:hidden mt-3 flex flex-wrap gap-2">
             {navItems.map((item) => (
               <Link key={item.path} to={item.path}>
                 <Button
                   variant={isActive(item.path) ? "default" : "ghost"}
                   size="sm"
-                  className="gap-2 hover:scale-105 transition-transform"
+                  className="gap-1 text-xs hover:scale-105 transition-transform"
                 >
-                  <item.icon className="h-4 w-4" />
+                  <item.icon className="h-3 w-3" />
                   {item.label}
                 </Button>
               </Link>
             ))}
           </div>
-
-          {/* Auth Buttons */}
-          <div className="flex items-center space-x-2">
-            <Link to="/login">
-              <Button variant="ghost" size="sm" className="gap-2 hover:scale-105 transition-transform">
-                <LogIn className="h-4 w-4" />
-                Login
-              </Button>
-            </Link>
-            <Link to="/signup">
-              <Button variant="hero" size="sm" className="gap-2">
-                <UserPlus className="h-4 w-4" />
-                Sign Up
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        <div className="md:hidden mt-3 flex flex-wrap gap-2">
-          {navItems.map((item) => (
-            <Link key={item.path} to={item.path}>
-              <Button
-                variant={isActive(item.path) ? "default" : "ghost"}
-                size="sm"
-                className="gap-1 text-xs hover:scale-105 transition-transform"
-              >
-                <item.icon className="h-3 w-3" />
-                {item.label}
-              </Button>
-            </Link>
-          ))}
-        </div>
+        )}
       </div>
     </nav>
   );
