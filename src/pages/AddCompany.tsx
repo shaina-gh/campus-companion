@@ -1,214 +1,216 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Link, useNavigate } from "react-router-dom";
-import { Building2, ArrowLeft, Calendar, MapPin, DollarSign } from "lucide-react";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useCompanies } from '@/hooks/useCompanies';
+import { ArrowLeft, Building } from 'lucide-react';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 const AddCompany = () => {
   const navigate = useNavigate();
+  const { addCompany } = useCompanies();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    companyName: "",
-    role: "",
-    status: "",
-    applicationDeadline: "",
-    interviewDate: "",
-    location: "",
-    salary: "",
-    applicationLink: "",
-    jobDescription: "",
-    requirements: "",
-    notes: ""
+    name: '',
+    role: '',
+    status: 'applied' as const,
+    application_date: new Date().toISOString().split('T')[0],
+    deadline: '',
+    notes: '',
+    website_url: '',
+    contact_email: '',
+    salary_range: '',
+    location: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Adding company:", formData);
-    alert("Company application added successfully!");
-    navigate("/");
+    setLoading(true);
+
+    const { error } = await addCompany({
+      ...formData,
+      deadline: formData.deadline || null,
+      notes: formData.notes || null,
+      website_url: formData.website_url || null,
+      contact_email: formData.contact_email || null,
+      salary_range: formData.salary_range || null,
+      location: formData.location || null
+    });
+
+    setLoading(false);
+
+    if (!error) {
+      navigate('/');
+    }
+  };
+
+  const handleChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-6 py-8">
-        <div className="mb-6">
-          <Button variant="ghost" onClick={() => navigate("/")} className="mb-4">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-          <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-            Add Company Application
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            Track your job application and interview process
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-background">
+      <Navbar />
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="flex items-center gap-4 mb-6">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate('/')}
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Dashboard
+            </Button>
+          </div>
 
-        <Card className="max-w-2xl shadow-custom-md">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Building2 className="h-5 w-5 text-primary" />
-              Company Details
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Basic Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="companyName">Company Name *</Label>
-                  <Input
-                    id="companyName"
-                    placeholder="Google, Microsoft, etc."
-                    value={formData.companyName}
-                    onChange={(e) => setFormData({...formData, companyName: e.target.value})}
-                    required
-                  />
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Building className="h-5 w-5" />
+                Add Company Application
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="name">Company Name *</Label>
+                    <Input
+                      id="name"
+                      value={formData.name}
+                      onChange={(e) => handleChange('name', e.target.value)}
+                      required
+                      placeholder="e.g. Google, Microsoft"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="role">Role *</Label>
+                    <Input
+                      id="role"
+                      value={formData.role}
+                      onChange={(e) => handleChange('role', e.target.value)}
+                      required
+                      placeholder="e.g. Software Engineer Intern"
+                    />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="role">Role *</Label>
-                  <Input
-                    id="role"
-                    placeholder="Software Engineer, Product Manager"
-                    value={formData.role}
-                    onChange={(e) => setFormData({...formData, role: e.target.value})}
-                    required
-                  />
-                </div>
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="status">Application Status</Label>
-                  <Select onValueChange={(value) => setFormData({...formData, status: value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="applied">Applied</SelectItem>
-                      <SelectItem value="interview">Interview Scheduled</SelectItem>
-                      <SelectItem value="offer">Offer Received</SelectItem>
-                      <SelectItem value="rejected">Rejected</SelectItem>
-                      <SelectItem value="pending">Pending</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="status">Application Status</Label>
+                    <Select value={formData.status} onValueChange={(value) => handleChange('status', value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="applied">Applied</SelectItem>
+                        <SelectItem value="interviewing">Interviewing</SelectItem>
+                        <SelectItem value="rejected">Rejected</SelectItem>
+                        <SelectItem value="offered">Offered</SelectItem>
+                        <SelectItem value="accepted">Accepted</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="application_date">Application Date</Label>
+                    <Input
+                      id="application_date"
+                      type="date"
+                      value={formData.application_date}
+                      onChange={(e) => handleChange('application_date', e.target.value)}
+                    />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="deadline">Application Deadline</Label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="deadline">Deadline (Optional)</Label>
                     <Input
                       id="deadline"
                       type="date"
-                      value={formData.applicationDeadline}
-                      onChange={(e) => setFormData({...formData, applicationDeadline: e.target.value})}
-                      className="pl-10"
+                      value={formData.deadline}
+                      onChange={(e) => handleChange('deadline', e.target.value)}
                     />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="interviewDate">Interview Date</Label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="interviewDate"
-                      type="date"
-                      value={formData.interviewDate}
-                      onChange={(e) => setFormData({...formData, interviewDate: e.target.value})}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="location">Location</Label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <Label htmlFor="location">Location (Optional)</Label>
                     <Input
                       id="location"
-                      placeholder="San Francisco, CA or Remote"
                       value={formData.location}
-                      onChange={(e) => setFormData({...formData, location: e.target.value})}
-                      className="pl-10"
+                      onChange={(e) => handleChange('location', e.target.value)}
+                      placeholder="e.g. San Francisco, CA"
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="salary">Expected Salary</Label>
-                  <div className="relative">
-                    <DollarSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="website_url">Company Website (Optional)</Label>
                     <Input
-                      id="salary"
-                      placeholder="80,000 - 120,000"
-                      value={formData.salary}
-                      onChange={(e) => setFormData({...formData, salary: e.target.value})}
-                      className="pl-10"
+                      id="website_url"
+                      type="url"
+                      value={formData.website_url}
+                      onChange={(e) => handleChange('website_url', e.target.value)}
+                      placeholder="https://company.com"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="contact_email">Contact Email (Optional)</Label>
+                    <Input
+                      id="contact_email"
+                      type="email"
+                      value={formData.contact_email}
+                      onChange={(e) => handleChange('contact_email', e.target.value)}
+                      placeholder="recruiter@company.com"
                     />
                   </div>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="applicationLink">Application Link</Label>
-                <Input
-                  id="applicationLink"
-                  type="url"
-                  placeholder="https://company.com/careers/job-id"
-                  value={formData.applicationLink}
-                  onChange={(e) => setFormData({...formData, applicationLink: e.target.value})}
-                />
-              </div>
+                <div>
+                  <Label htmlFor="salary_range">Salary Range (Optional)</Label>
+                  <Input
+                    id="salary_range"
+                    value={formData.salary_range}
+                    onChange={(e) => handleChange('salary_range', e.target.value)}
+                    placeholder="e.g. $80k - $100k"
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="jobDescription">Job Description</Label>
-                <Textarea
-                  id="jobDescription"
-                  placeholder="Key responsibilities and requirements..."
-                  value={formData.jobDescription}
-                  onChange={(e) => setFormData({...formData, jobDescription: e.target.value})}
-                  rows={4}
-                />
-              </div>
+                <div>
+                  <Label htmlFor="notes">Notes (Optional)</Label>
+                  <Textarea
+                    id="notes"
+                    value={formData.notes}
+                    onChange={(e) => handleChange('notes', e.target.value)}
+                    placeholder="Add any notes about the application, interview process, etc."
+                    rows={4}
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="requirements">Key Requirements</Label>
-                <Textarea
-                  id="requirements"
-                  placeholder="Skills, experience, education requirements..."
-                  value={formData.requirements}
-                  onChange={(e) => setFormData({...formData, requirements: e.target.value})}
-                  rows={3}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="notes">Personal Notes</Label>
-                <Textarea
-                  id="notes"
-                  placeholder="Interview prep notes, contacts, follow-ups..."
-                  value={formData.notes}
-                  onChange={(e) => setFormData({...formData, notes: e.target.value})}
-                  rows={3}
-                />
-              </div>
-
-              <div className="flex gap-4 pt-4">
-                <Button type="submit" variant="hero" className="flex-1">
-                  Add Company Application
-                </Button>
-                <Button type="button" variant="outline" onClick={() => navigate("/")}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+                <div className="flex gap-4 justify-end">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => navigate('/')}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" disabled={loading}>
+                    {loading ? 'Adding...' : 'Add Application'}
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };

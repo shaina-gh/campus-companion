@@ -14,6 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
+      companies: {
+        Row: {
+          application_date: string
+          contact_email: string | null
+          created_at: string
+          deadline: string | null
+          id: string
+          location: string | null
+          name: string
+          notes: string | null
+          role: string
+          salary_range: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          website_url: string | null
+        }
+        Insert: {
+          application_date?: string
+          contact_email?: string | null
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          location?: string | null
+          name: string
+          notes?: string | null
+          role: string
+          salary_range?: string | null
+          status: string
+          updated_at?: string
+          user_id: string
+          website_url?: string | null
+        }
+        Update: {
+          application_date?: string
+          contact_email?: string | null
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          location?: string | null
+          name?: string
+          notes?: string | null
+          role?: string
+          salary_range?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      goals: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          priority: string
+          progress_percentage: number | null
+          status: string
+          target_date: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          priority?: string
+          progress_percentage?: number | null
+          status?: string
+          target_date?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          priority?: string
+          progress_percentage?: number | null
+          status?: string
+          target_date?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           academic_year: string

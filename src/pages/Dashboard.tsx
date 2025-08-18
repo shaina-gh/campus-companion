@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useCompanies } from "@/hooks/useCompanies";
 import { 
   Building2, 
   Target, 
@@ -19,6 +20,14 @@ import {
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { companies } = useCompanies();
+
+  // Calculate statistics from real data
+  const totalApplications = companies.length;
+  const interviewsCount = companies.filter(c => c.status === 'interviewing').length;
+  const offersCount = companies.filter(c => c.status === 'offered' || c.status === 'accepted').length;
+  const successRate = totalApplications > 0 ? Math.round((offersCount / totalApplications) * 100) : 0;
+
   const handleQuickAction = (action: string) => {
     console.log("Quick action:", action);
     if (action === "Add New Application") {
@@ -68,31 +77,31 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <DashboardCard
             title="Applications Sent"
-            value={12}
-            subtitle="3 new this week"
+            value={totalApplications}
+            subtitle={totalApplications > 0 ? `${totalApplications} total applications` : "Start your journey!"}
             icon={Building2}
-            trend={{ value: 25, isPositive: true }}
+            trend={totalApplications > 0 ? { value: totalApplications, isPositive: true } : undefined}
             gradient
           />
           <DashboardCard
             title="Interview Scheduled"
-            value={4}
-            subtitle="2 upcoming"
+            value={interviewsCount}
+            subtitle={interviewsCount > 0 ? "In progress" : "Keep applying!"}
             icon={Calendar}
-            trend={{ value: 100, isPositive: true }}
+            trend={interviewsCount > 0 ? { value: 100, isPositive: true } : undefined}
           />
           <DashboardCard
-            title="Skills in Progress"
-            value={6}
-            subtitle="2 near completion"
-            icon={Target}
-            trend={{ value: 15, isPositive: true }}
+            title="Offers Received"
+            value={offersCount}
+            subtitle={offersCount > 0 ? "Congratulations!" : "Stay positive!"}
+            icon={Award}
+            trend={offersCount > 0 ? { value: 100, isPositive: true } : undefined}
           />
           <DashboardCard
-            title="Journal Entries"
-            value={15}
-            subtitle="Last entry yesterday"
-            icon={BookOpen}
+            title="Success Rate"
+            value={`${successRate}%`}
+            subtitle={totalApplications > 0 ? "Keep improving!" : "Start tracking"}
+            icon={TrendingUp}
           />
         </div>
 
