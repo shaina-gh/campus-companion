@@ -21,12 +21,13 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const navItems = [
-    { path: "/", label: "Dashboard", icon: Home },
-    { path: "/skills", label: "Skills", icon: Target },
+    { path: "/dashboard", label: "Dashboard", icon: Home },
+    { path: "/add-company", label: "Applications", icon: Building2 },
+    { path: "/interviews", label: "Interviews", icon: Target },
+    { path: "/networking", label: "Network", icon: UserPlus },
+    { path: "/analytics", label: "Analytics", icon: TrendingUp },
+    { path: "/skills", label: "Skills", icon: Award },
     { path: "/journal", label: "Journal", icon: BookOpen },
-    { path: "/add-company", label: "Add Company", icon: Building2 },
-    { path: "/add-goal", label: "Set Goal", icon: Plus },
-    { path: "/log-achievement", label: "Achievement", icon: Award },
   ];
 
   return (

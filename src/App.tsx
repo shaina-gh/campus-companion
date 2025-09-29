@@ -5,14 +5,18 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import Dashboard from "./pages/Dashboard";
+import Index from "./pages/Index";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import Dashboard from "./pages/Dashboard";
 import AddCompany from "./pages/AddCompany";
-import Skills from "./pages/Skills";
-import Journal from "./pages/Journal";
 import AddGoal from "./pages/AddGoal";
 import LogAchievement from "./pages/LogAchievement";
+import Journal from "./pages/Journal";
+import Skills from "./pages/Skills";
+import Interviews from "./pages/Interviews";
+import Networking from "./pages/Networking";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +39,26 @@ const App = () => (
             <Route path="/add-company" element={
               <ProtectedRoute>
                 <AddCompany />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/interviews" element={
+              <ProtectedRoute>
+                <Interviews />
+              </ProtectedRoute>
+            } />
+            <Route path="/networking" element={
+              <ProtectedRoute>
+                <Networking />
+              </ProtectedRoute>
+            } />
+            <Route path="/analytics" element={
+              <ProtectedRoute>
+                <Analytics />
               </ProtectedRoute>
             } />
             <Route path="/skills" element={

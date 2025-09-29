@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          achievement_type: string
+          attachment_url: string | null
+          created_at: string
+          date_achieved: string
+          description: string | null
+          id: string
+          impact_description: string | null
+          is_featured: boolean | null
+          organization: string | null
+          skills_used: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+          verification_url: string | null
+        }
+        Insert: {
+          achievement_type: string
+          attachment_url?: string | null
+          created_at?: string
+          date_achieved: string
+          description?: string | null
+          id?: string
+          impact_description?: string | null
+          is_featured?: boolean | null
+          organization?: string | null
+          skills_used?: string[] | null
+          title: string
+          updated_at?: string
+          user_id: string
+          verification_url?: string | null
+        }
+        Update: {
+          achievement_type?: string
+          attachment_url?: string | null
+          created_at?: string
+          date_achieved?: string
+          description?: string | null
+          id?: string
+          impact_description?: string | null
+          is_featured?: boolean | null
+          organization?: string | null
+          skills_used?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          verification_url?: string | null
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           application_date: string
@@ -65,6 +116,108 @@ export type Database = {
         }
         Relationships: []
       }
+      contacts: {
+        Row: {
+          company: string | null
+          connection_strength: string | null
+          created_at: string
+          email: string | null
+          id: string
+          last_contacted: string | null
+          linkedin_url: string | null
+          name: string
+          notes: string | null
+          phone: string | null
+          position: string | null
+          referral_potential: boolean | null
+          relationship: string | null
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company?: string | null
+          connection_strength?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_contacted?: string | null
+          linkedin_url?: string | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          position?: string | null
+          referral_potential?: boolean | null
+          relationship?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company?: string | null
+          connection_strength?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_contacted?: string | null
+          linkedin_url?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          position?: string | null
+          referral_potential?: boolean | null
+          relationship?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          created_at: string
+          description: string | null
+          document_type: string
+          file_path: string
+          file_size: number | null
+          id: string
+          is_primary: boolean | null
+          mime_type: string | null
+          name: string
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          document_type: string
+          file_path: string
+          file_size?: number | null
+          id?: string
+          is_primary?: boolean | null
+          mime_type?: string | null
+          name: string
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          document_type?: string
+          file_path?: string
+          file_size?: number | null
+          id?: string
+          is_primary?: boolean | null
+          mime_type?: string | null
+          name?: string
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       goals: {
         Row: {
           category: string
@@ -107,6 +260,77 @@ export type Database = {
         }
         Relationships: []
       }
+      interviews: {
+        Row: {
+          company_id: string | null
+          created_at: string
+          duration_minutes: number | null
+          feedback: string | null
+          follow_up_required: boolean | null
+          id: string
+          interview_link: string | null
+          interview_type: string
+          interviewer_email: string | null
+          interviewer_name: string | null
+          location: string | null
+          outcome: string | null
+          preparation_notes: string | null
+          rating: number | null
+          scheduled_date: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string
+          duration_minutes?: number | null
+          feedback?: string | null
+          follow_up_required?: boolean | null
+          id?: string
+          interview_link?: string | null
+          interview_type: string
+          interviewer_email?: string | null
+          interviewer_name?: string | null
+          location?: string | null
+          outcome?: string | null
+          preparation_notes?: string | null
+          rating?: number | null
+          scheduled_date: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string
+          duration_minutes?: number | null
+          feedback?: string | null
+          follow_up_required?: boolean | null
+          id?: string
+          interview_link?: string | null
+          interview_type?: string
+          interviewer_email?: string | null
+          interviewer_name?: string | null
+          location?: string | null
+          outcome?: string | null
+          preparation_notes?: string | null
+          rating?: number | null
+          scheduled_date?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interviews_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           academic_year: string
@@ -136,6 +360,159 @@ export type Database = {
           id?: string
           university?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reminders: {
+        Row: {
+          created_at: string
+          description: string | null
+          due_date: string
+          id: string
+          is_completed: boolean | null
+          priority: string | null
+          recurring_pattern: string | null
+          related_company_id: string | null
+          related_interview_id: string | null
+          reminder_type: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          due_date: string
+          id?: string
+          is_completed?: boolean | null
+          priority?: string | null
+          recurring_pattern?: string | null
+          related_company_id?: string | null
+          related_interview_id?: string | null
+          reminder_type: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          due_date?: string
+          id?: string
+          is_completed?: boolean | null
+          priority?: string | null
+          recurring_pattern?: string | null
+          related_company_id?: string | null
+          related_interview_id?: string | null
+          reminder_type?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reminders_related_company_id_fkey"
+            columns: ["related_company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reminders_related_interview_id_fkey"
+            columns: ["related_interview_id"]
+            isOneToOne: false
+            referencedRelation: "interviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      skills: {
+        Row: {
+          category: string
+          created_at: string
+          endorsements: number | null
+          id: string
+          is_featured: boolean | null
+          last_practiced: string | null
+          learning_resources: string[] | null
+          name: string
+          practice_frequency: string | null
+          proficiency_level: number
+          target_level: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          endorsements?: number | null
+          id?: string
+          is_featured?: boolean | null
+          last_practiced?: string | null
+          learning_resources?: string[] | null
+          name: string
+          practice_frequency?: string | null
+          proficiency_level: number
+          target_level?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          endorsements?: number | null
+          id?: string
+          is_featured?: boolean | null
+          last_practiced?: string | null
+          learning_resources?: string[] | null
+          name?: string
+          practice_frequency?: string | null
+          proficiency_level?: number
+          target_level?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      templates: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_default: boolean | null
+          name: string
+          placeholders: string[] | null
+          subject: string | null
+          template_type: string
+          updated_at: string
+          usage_count: number | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_default?: boolean | null
+          name: string
+          placeholders?: string[] | null
+          subject?: string | null
+          template_type: string
+          updated_at?: string
+          usage_count?: number | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_default?: boolean | null
+          name?: string
+          placeholders?: string[] | null
+          subject?: string | null
+          template_type?: string
+          updated_at?: string
+          usage_count?: number | null
           user_id?: string
         }
         Relationships: []
